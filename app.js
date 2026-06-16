@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 /* ── State ── */
 const state = {
@@ -94,7 +94,7 @@ async function handleRoute() {
   } else if (page === 'about') {
     renderAbout();
   } else {
-    renderHome();
+    await renderHome();
   }
 
   window.scrollTo({ top: 0, behavior: 'instant' });
@@ -152,14 +152,35 @@ function parseVerses(lines) {
 }
 
 /* ── Pages ── */
-function renderHome() {
+async function renderHome() {
+  let nextEvent = null;
+  try {
+    const today  = new Date().toISOString().split('T')[0];
+    const events = await loadEvents();
+    nextEvent = events
+      .filter(ev => ev.date >= today)
+      .sort((a, b) => a.date.localeCompare(b.date))[0] || null;
+  } catch (_) {}
+
+  const localeMap = { de: 'de-DE', tr: 'tr-TR', fr: 'fr-FR', en: 'en-GB', it: 'it-IT' };
+  const locale    = localeMap[state.lang] || 'de-DE';
+
+  const eventBox = nextEvent ? `
+    <a href="#/events/${nextEvent.id}" class="hero-next-event">
+      <span class="hero-next-date">${new Date(nextEvent.date).toLocaleDateString(locale, { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+      <span class="hero-next-name">${esc(nextEvent.name)}</span>
+    </a>` : '';
+
   $('#main-content').innerHTML = `
     <section class="hero page">
       <div class="hero-content">
         <p class="hero-label" data-i18n="home.label">${esc(t('home.label'))}</p>
         <h1 class="hero-title">Reisende</h1>
         <p class="hero-subtitle" data-i18n="home.subtitle">${esc(t('home.subtitle'))}</p>
-        <a href="#/repertoire" class="hero-cta" data-i18n="home.cta">${esc(t('home.cta'))}</a>
+        <div class="hero-actions">
+          ${eventBox}
+          <a href="#/repertoire" class="hero-cta" data-i18n="home.cta">${esc(t('home.cta'))}</a>
+        </div>
       </div>
     </section>`;
 }
@@ -346,23 +367,28 @@ function renderAbout() {
       <div class="container">
         <div class="page-header">
           <h1 data-i18n="nav.about">${esc(t('nav.about'))}</h1>
+          <p data-i18n="about.tagline">${esc(t('about.tagline'))}</p>
         </div>
         <div class="about-grid">
           <div class="about-text">
             <p data-i18n="about.intro1">${esc(t('about.intro1'))}</p>
             <p data-i18n="about.intro2">${esc(t('about.intro2'))}</p>
             <p data-i18n="about.intro3">${esc(t('about.intro3'))}</p>
+            <p data-i18n="about.intro4">${esc(t('about.intro4'))}</p>
+            <p data-i18n="about.intro5">${esc(t('about.intro5'))}</p>
           </div>
           <div class="members-section">
             <div class="member-card">
-              <div class="member-name">Şebnem Yıldız</div>
+              <div class="member-name">Uğur</div>
               <div class="member-role" data-i18n="about.member1Role">${esc(t('about.member1Role'))}</div>
-              <div class="member-bio" data-i18n="about.member1Bio">${esc(t('about.member1Bio'))}</div>
             </div>
             <div class="member-card">
-              <div class="member-name">Mira Kovač</div>
+              <div class="member-name">Taha</div>
               <div class="member-role" data-i18n="about.member2Role">${esc(t('about.member2Role'))}</div>
-              <div class="member-bio" data-i18n="about.member2Bio">${esc(t('about.member2Bio'))}</div>
+            </div>
+            <div class="member-card">
+              <div class="member-name">Hilal</div>
+              <div class="member-role" data-i18n="about.member3Role">${esc(t('about.member3Role'))}</div>
             </div>
           </div>
         </div>
@@ -371,11 +397,11 @@ function renderAbout() {
           <div class="contact-grid">
             <div class="contact-item">
               <span class="contact-label" data-i18n="about.bookingLabel">${esc(t('about.bookingLabel'))}</span>
-              <span class="contact-value"><a href="mailto:booking@reisende-musik.de">booking@reisende-musik.de</a></span>
+              <span class="contact-value"><a href="mailto:tyasinturedi@gmail.com">tyasinturedi@gmail.com</a></span>
             </div>
             <div class="contact-item">
               <span class="contact-label" data-i18n="about.pressLabel">${esc(t('about.pressLabel'))}</span>
-              <span class="contact-value"><a href="mailto:presse@reisende-musik.de">presse@reisende-musik.de</a></span>
+              <span class="contact-value"><a href="mailto:tyasinturedi@gmail.com">tyasinturedi@gmail.com</a></span>
             </div>
             <div class="contact-item">
               <span class="contact-label" data-i18n="about.instagramLabel">${esc(t('about.instagramLabel'))}</span>

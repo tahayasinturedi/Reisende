@@ -1,0 +1,49 @@
+{
+  "nav": {
+    "home":       "Accueil",
+    "events":     "Concerts",
+    "repertoire": "Répertoire",
+    "about":      "À propos"
+  },
+  "home": {
+    "label":    "Musique de deux mondes",
+    "subtitle": "Poésie turque. Sonorités européennes.",
+    "cta":      "Découvrir le répertoire"
+  },
+  "events": {
+    "subtitle":    "Concerts à venir et passés",
+    "upcoming":    "À venir",
+    "past":        "Passé",
+    "empty":       "Aucun événement prévu pour le moment.",
+    "setlistTitle":"Programme",
+    "setlistHint": "Cliquez sur un titre pour lire les paroles.",
+    "backToEvents":"Retour aux concerts",
+    "notFound":    "Concert introuvable."
+  },
+  "repertoire": {
+    "subtitle":  "Chansons turques & compositions originales",
+    "songs":     "chansons",
+    "listView":  "Liste",
+    "gridView":  "Grille"
+  },
+  "about": {
+    "intro1":        "Reisende – un duo entre Istanbul et Vienne, entre langue maternelle et envie de voyage. Şebnem et Mira sont réunies par une passion pour les frontières que l'on franchit avec la musique.",
+    "intro2":        "Fondé en 2022 à Berlin, le duo a déjà joué sur des scènes en Allemagne, en Autriche, en Suisse et en Turquie, captivant le public avec un programme mêlant poésie, folklore et musique acoustique contemporaine.",
+    "intro3":        "Leurs concerts sont des rencontres : entre les langues, entre les cultures, entre le familier et l'étranger.",
+    "member1Role":   "Chant & Saz",
+    "member1Bio":    "Şebnem Yıldız est originaire d'Ankara et vit à Berlin depuis dix ans. Elle a étudié la composition au Conservatoire de Hacettepe et a apporté les sons du folklore anatolien en Europe.",
+    "member2Role":   "Guitare & Contrebasse",
+    "member2Bio":    "Mira Kovač a grandi à Vienne et a étudié la guitare classique à la mdw. Ses voyages musicaux l'ont menée des Balkans jusqu'au Moyen-Orient, où elle a découvert les intersections entre musiques européenne et orientale.",
+    "contactTitle":  "Contact",
+    "bookingLabel":  "Réservation",
+    "pressLabel":    "Presse",
+    "instagramLabel":"Instagram"
+  },
+  "song": {
+    "back":            "Retour au répertoire",
+    "modeParallel":    "Deux colonnes",
+    "modeInterleaved": "Entrelacé",
+    "selectLang":      "Choisir la traduction",
+    "notFound":        "Chanson introuvable."
+  }
+}

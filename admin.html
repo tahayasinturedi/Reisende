@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reisende — Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sage:         #96A78D;
+      --sage-light:   #B6CEB4;
+      --sage-lighter: #D9E9CF;
+      --off-white:    #F0F0F0;
+      --charcoal:     #37474F;
+      --red:          #c0392b;
+      --font-h: 'Cormorant Garamond', Georgia, serif;
+      --font-b: 'Jost', system-ui, sans-serif;
+      --ease: 180ms ease;
+      --radius: 4px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-b); font-weight: 400; color: var(--charcoal); background: var(--off-white); font-size: 0.9375rem; }
+    button { cursor: pointer; border: none; background: none; font: inherit; color: inherit; }
+    input, select, textarea { font: inherit; }
+
+    /* ── Login ── */
+    #login-screen {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: var(--off-white);
+    }
+    .login-box {
+      width: 100%;
+      max-width: 380px;
+      padding: 2.5rem 2rem;
+      background: white;
+      border: 1px solid var(--sage-lighter);
+      border-radius: var(--radius);
+    }
+    .login-logo {
+      font-family: var(--font-h);
+      font-size: 2rem;
+      font-weight: 400;
+      text-align: center;
+      color: var(--charcoal);
+      margin-bottom: 0.25rem;
+    }
+    .login-sub {
+      font-size: 0.6875rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--sage);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .login-box input[type="password"] {
+      width: 100%;
+      border: 1px solid var(--sage-lighter);
+      border-radius: var(--radius);
+      padding: 0.65rem 0.875rem;
+      margin-bottom: 0.75rem;
+      transition: border-color var(--ease);
+    }
+    .login-box input:focus { outline: none; border-color: var(--sage); }
+    .btn-primary {
+      width: 100%;
+      padding: 0.7rem;
+      background: var(--charcoal);
+      color: var(--off-white);
+      border-radius: var(--radius);
+      font-size: 0.8125rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: opacity var(--ease);
+    }
+    .btn-primary:hover { opacity: 0.8; }
+    .login-error { color: var(--red); font-size: 0.8125rem; margin-top: 0.5rem; text-align: center; min-height: 1.2em; }
+
+    /* ── Admin Shell ── */
+    #admin-panel { display: none; min-height: 100vh; flex-direction: column; }
+    #admin-panel.visible { display: flex; }
+    .admin-header {
+      position: sticky; top: 0; z-index: 100;
+      height: 56px;
+      background: var(--charcoal);
+      color: var(--off-white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+    }
+    .admin-header-logo { font-family: var(--font-h); font-size: 1.25rem; letter-spacing: 0.08em; }
+    .admin-header-logo span { font-size: 0.625rem; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.5; margin-left: 0.75rem; vertical-align: middle; }
+    .btn-logout { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.6; transition: opacity var(--ease); }
+    .btn-logout:hover { opacity: 1; }
+
+    .admin-body { flex: 1; max-width: 960px; margin: 0 auto; width: 100%; padding: 2rem 1.5rem 4rem; }
+
+    /* ── Tabs ── */
+    .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--sage-lighter); margin-bottom: 2rem; }
+    .tab-btn {
+      padding: 0.75rem 1.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.45;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all var(--ease);
+    }
+    .tab-btn:hover { opacity: 0.8; }
+    .tab-btn.active { opacity: 1; color: var(--sage); border-bottom-color: var(--sage); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── Section header ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .section-title { font-family: var(--font-h); font-size: 1.5rem; font-weight: 400; }
+    .btn-add {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 1.25rem;
+      border: 1px solid var(--sage);
+      color: var(--charcoal);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: var(--radius);
+      transition: all var(--ease);
+    }
+    .btn-add:hover { background: var(--sage); color: white; }
+
+    /* ── Table ── */
+    .admin-table { width: 100%; border-collapse: collapse; }
+    .admin-table th {
+      font-size: 0.625rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--sage);
+      text-align: left;
+      padding: 0 0.75rem 0.75rem;
+      border-bottom: 1px solid var(--sage-lighter);
+    }
+    .admin-table td {
+      padding: 1rem 0.75rem;
+      border-bottom: 1px solid var(--sage-lighter);
+      font-size: 0.9rem;
+      vertical-align: middle;
+    }
+    .admin-table tr:hover td { background: var(--sage-lighter); }
+    .num-cell { color: var(--sage); opacity: 0.7; font-family: var(--font-h); font-size: 0.875rem; width: 2.5rem; }
+    .meta-cell { opacity: 0.45; font-size: 0.8125rem; }
+    .actions-cell { text-align: right; white-space: nowrap; }
+    .btn-edit { font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.5; padding: 0.25rem 0.5rem; transition: opacity var(--ease); }
+    .btn-edit:hover { opacity: 1; }
+    .btn-delete { font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red); opacity: 0.4; padding: 0.25rem 0.5rem; transition: opacity var(--ease); }
+    .btn-delete:hover { opacity: 1; }
+
+    /* ── Modal ── */
+    #modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(55, 71, 79, 0.5);
+      z-index: 500;
+      overflow-y: auto;
+      padding: 2rem 1rem;
+    }
+    #modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+    .modal {
+      background: white;
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 640px;
+      overflow: hidden;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--sage-lighter);
+    }
+    .modal-title { font-family: var(--font-h); font-size: 1.25rem; font-weight: 400; }
+    .btn-close { font-size: 1.25rem; opacity: 0.4; transition: opacity var(--ease); line-height: 1; }
+    .btn-close:hover { opacity: 1; }
+    .modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--sage-lighter);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* ── Form fields ── */
+    .field { display: flex; flex-direction: column; gap: 0.35rem; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .field label { font-size: 0.625rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sage); }
+    .field input, .field select {
+      border: 1px solid var(--sage-lighter);
+      border-radius: var(--radius);
+      padding: 0.6rem 0.75rem;
+      transition: border-color var(--ease);
+      background: white;
+      color: var(--charcoal);
+    }
+    .field input:focus, .field select:focus { outline: none; border-color: var(--sage); }
+    .field input[readonly] { background: var(--off-white); cursor: not-allowed; opacity: 0.6; }
+    .field textarea {
+      border: 1px solid var(--sage-lighter);
+      border-radius: var(--radius);
+      padding: 0.75rem;
+      min-height: 200px;
+      resize: vertical;
+      font-family: 'Courier New', monospace;
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      transition: border-color var(--ease);
+    }
+    .field textarea:focus { outline: none; border-color: var(--sage); }
+    .field-hint { font-size: 0.75rem; opacity: 0.45; font-style: italic; }
+    .json-status { font-size: 0.75rem; margin-top: 0.25rem; }
+    .json-status.ok  { color: #27ae60; }
+    .json-status.err { color: var(--red); }
+
+    /* ── Setlist editor ── */
+    .setlist-label { font-size: 0.625rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sage); margin-bottom: 0.35rem; }
+    #setlist-drag-zone { display: flex; flex-direction: column; gap: 2px; min-height: 48px; }
+    .sl-row {
+      display: grid;
+      grid-template-columns: 24px 1.5rem 1fr auto;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 0.75rem;
+      background: var(--sage-lighter);
+      border-radius: var(--radius);
+      cursor: grab;
+      user-select: none;
+      transition: background var(--ease);
+    }
+    .sl-row.drag-over { background: var(--sage-light); outline: 2px dashed var(--sage); }
+    .sl-row.dragging  { opacity: 0.4; }
+    .drag-handle { cursor: grab; opacity: 0.4; font-size: 1rem; text-align: center; }
+    .sl-num { font-family: var(--font-h); color: var(--sage); font-size: 0.875rem; text-align: right; opacity: 0.7; }
+    .sl-title { font-size: 0.9375rem; }
+    .btn-sl-remove { font-size: 1rem; opacity: 0.35; transition: opacity var(--ease); line-height: 1; padding: 0 0.25rem; }
+    .btn-sl-remove:hover { opacity: 1; color: var(--red); }
+    .setlist-empty { padding: 1rem; text-align: center; opacity: 0.3; font-style: italic; font-size: 0.875rem; background: var(--off-white); border-radius: var(--radius); }
+
+    .available-label { font-size: 0.625rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sage); margin: 1rem 0 0.35rem; }
+    #available-songs { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .avail-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.75rem;
+      border: 1px solid var(--sage-lighter);
+      border-radius: 2rem;
+      font-size: 0.8125rem;
+      cursor: pointer;
+      transition: all var(--ease);
+    }
+    .avail-chip:hover { background: var(--sage-lighter); border-color: var(--sage); }
+
+    /* ── Buttons ── */
+    .btn-save {
+      padding: 0.65rem 2rem;
+      background: var(--charcoal);
+      color: white;
+      border-radius: var(--radius);
+      font-size: 0.8125rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: opacity var(--ease);
+    }
+    .btn-save:hover { opacity: 0.8; }
+    .btn-save:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-cancel {
+      padding: 0.65rem 1.25rem;
+      font-size: 0.8125rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.4;
+      transition: opacity var(--ease);
+    }
+    .btn-cancel:hover { opacity: 0.8; }
+    .btn-download {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--sage-lighter);
+      padding-bottom: 1px;
+      opacity: 0.5;
+      transition: all var(--ease);
+    }
+    .btn-download:hover { opacity: 1; border-color: var(--sage); color: var(--sage); }
+
+    /* ── Notices ── */
+    .notice {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius);
+      font-size: 0.8125rem;
+      border-left: 3px solid;
+      margin-bottom: 1.5rem;
+    }
+    .notice-warn { background: #fff8e1; border-color: #f59e0b; color: #92400e; }
+    .modal-error { color: var(--red); font-size: 0.8125rem; }
+  </style>
+</head>
+<body>
+
+<!-- ── Login ── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Reisende</div>
+    <div class="login-sub">Yönetim Paneli</div>
+    <form id="login-form">
+      <input type="password" id="pw-input" placeholder="Şifre" autocomplete="current-password">
+      <button type="submit" class="btn-primary">Giriş Yap</button>
+    </form>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- ── Admin Panel ── -->
+<div id="admin-panel">
+  <header class="admin-header">
+    <div class="admin-header-logo">Reisende <span>Admin</span></div>
+    <button class="btn-logout" id="btn-logout">Çıkış</button>
+  </header>
+
+  <div class="admin-body">
+    <div class="notice notice-warn">
+      ⚠ Render ücretsiz planda değişiklikler bir sonraki deploy'a kadar geçerlidir.
+      Kalıcı kaydetmek için sayfanın altındaki <strong>JSON İndir</strong> butonlarını kullanın.
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="songs">Şarkılar</button>
+      <button class="tab-btn" data-tab="events">Konserler</button>
+    </div>
+
+    <!-- Songs -->
+    <div class="tab-content active" id="tab-songs">
+      <div class="section-header">
+        <h2 class="section-title">Şarkılar</h2>
+        <div style="display:flex;gap:.75rem;align-items:center;">
+          <button class="btn-download" id="btn-dl-songs">JSON İndir ↓</button>
+          <button class="btn-add" id="btn-add-song">+ Şarkı Ekle</button>
+        </div>
+      </div>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Başlık</th>
+            <th>Tür</th>
+            <th>Süre</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="songs-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- Events -->
+    <div class="tab-content" id="tab-events">
+      <div class="section-header">
+        <h2 class="section-title">Konserler</h2>
+        <div style="display:flex;gap:.75rem;align-items:center;">
+          <button class="btn-download" id="btn-dl-events">JSON İndir ↓</button>
+          <button class="btn-add" id="btn-add-event">+ Konser Ekle</button>
+        </div>
+      </div>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Tarih</th>
+            <th>Konser Adı</th>
+            <th>Mekan</th>
+            <th>Setlist</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="events-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── Modal ── -->
+<div id="modal-overlay">
+  <div class="modal" id="modal-box">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-title"></h3>
+      <button class="btn-close" id="btn-close-modal">×</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <span class="modal-error" id="modal-error"></span>
+      <div style="display:flex;gap:.75rem;margin-left:auto;">
+        <button class="btn-cancel" id="btn-modal-cancel">İptal</button>
+        <button class="btn-save" id="btn-modal-save">Kaydet</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+[
+  {
+    "tr":  "Boğaz'a düşer yağmur damlaları",
+    "de":  "Regentropfen fallen auf den Bosporus",
+    "en":  "Raindrops fall upon the Bosphorus",
+    "fr":  "Des gouttes de pluie tombent sur le Bosphore",
+    "it":  "Gocce di pioggia cadono sul Bosforo",
+    "ar":  "قطرات المطر تتساقط على البوسفور",
+    "ku":  "Xuryên baranê li ser Bosphorus dikevin",
+    "ukr": "Краплі дощу падають на Босфор"
+  },
+  {
+    "tr":  "Minare sislere gömülür",
+    "de":  "Die Minarette versinken im Nebel",
+    "en":  "Minarets sink into the mist",
+    "fr":  "Les minarets s'enfoncent dans le brouillard",
+    "it":  "I minareti affondano nella nebbia",
+    "ar":  "المآذن تغرق في الضباب",
+    "ku":  "Minare di mijê de vedimire",
+    "ukr": "Мінарети занурюються в туман"
+  },
+  {
+    "tr":  "Galata Köprüsü'nde yalnız balıkçılar",
+    "de":  "Einsame Fischer auf der Galatabrücke",
+    "en":  "Lone fishermen stand on Galata Bridge",
+    "fr":  "Des pêcheurs solitaires sur le pont de Galata",
+    "it":  "Pescatori solitari sul Ponte di Galata",
+    "ar":  "صيّادون منفردون على جسر غلطة",
+    "ku":  "Masivanên tenê li ser Pira Galata",
+    "ukr": "Самотні рибалки на мосту Галата"
+  },
+  {
+    "tr":  "İstanbul ağlar, İstanbul dinginleşir",
+    "de":  "Istanbul weint, Istanbul findet seinen Frieden",
+    "en":  "Istanbul weeps, Istanbul finds peace",
+    "fr":  "Istanbul pleure, Istanbul s'apaise",
+    "it":  "Istanbul piange, Istanbul trova pace",
+    "ar":  "إسطنبول تبكي، إسطنبول تجد سلامها",
+    "ku":  "Stenbol digirî, Stenbol aram dibe",
+    "ukr": "Стамбул плаче, Стамбул знаходить спокій"
+  },
+  {},
+  {
+    "tr":  "Kahvenin kokusu, yağmurun serinliği",
+    "de":  "Der Duft des Kaffees, die Kühle des Regens",
+    "en":  "The scent of coffee, the coolness of rain",
+    "fr":  "L'arôme du café, la fraîcheur de la pluie",
+    "it":  "Il profumo del caffè, la freschezza della pioggia",
+    "ar":  "عطر القهوة وبرودة المطر",
+    "ku":  "Bîna qehweyê, sermaya baranê",
+    "ukr": "Аромат кави, прохолода дощу"
+  },
+  {
+    "tr":  "Martı çığlıkları susar birden",
+    "de":  "Die Möwenschreie verstummen plötzlich",
+    "en":  "The cries of seagulls suddenly fall silent",
+    "fr":  "Les cris des mouettes se taisent soudainement",
+    "it":  "I gridi dei gabbiani si tacciono all'improvviso",
+    "ar":  "صرخات النوارس تصمت فجأة",
+    "ku":  "Dengên mewiyên çemê bê deng dibin",
+    "ukr": "Крики мартинів раптово змовкають"
+  },
+  {
+    "tr":  "Tarihi sokaklar yıkanır temizlenir",
+    "de":  "Die historischen Gassen werden rein gewaschen",
+    "en":  "The historic streets are washed clean",
+    "fr":  "Les ruelles historiques sont lavées, purifiées",
+    "it":  "Le strade storiche vengono lavate e purificate",
+    "ar":  "الأزقة التاريخية تُغسل وتتطهّر",
+    "ku":  "Kolanan dîrokî tên şuştin û paqijkirin",
+    "ukr": "Історичні вулиці миються та очищаються"
+  },
+  {
+    "tr":  "Ve ben seni düşünürüm yağmurda",
+    "de":  "Und im Regen denke ich an dich",
+    "en":  "And in the rain, I think of you",
+    "fr":  "Et sous la pluie, je pense à toi",
+    "it":  "E sotto la pioggia, penso a te",
+    "ar":  "وفي المطر، أفكّر بك",
+    "ku":  "Û ez di baranê de li te difikirim",
+    "ukr": "І під дощем я думаю про тебе"
+  }
+]

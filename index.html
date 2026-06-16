@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reisende</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header id="site-header">
+    <div class="header-inner">
+      <a href="#/" class="logo" aria-label="Reisende">Reisende</a>
+      <nav class="main-nav" aria-label="Navigation">
+        <a href="#/events" data-i18n="nav.events">Konzerte</a>
+        <a href="#/repertoire" data-i18n="nav.repertoire">Repertoire</a>
+        <a href="#/about" data-i18n="nav.about">Über uns</a>
+      </nav>
+      <div class="lang-switcher" role="group" aria-label="Sprache">
+        <button class="lang-btn active" data-lang="de">DE</button>
+        <span class="lang-sep">·</span>
+        <button class="lang-btn" data-lang="tr">TR</button>
+        <span class="lang-sep">·</span>
+        <button class="lang-btn" data-lang="fr">FR</button>
+        <span class="lang-sep">·</span>
+        <button class="lang-btn" data-lang="en">EN</button>
+        <span class="lang-sep">·</span>
+        <button class="lang-btn" data-lang="it">IT</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" role="main"></main>
+
+  <nav class="mobile-nav" aria-label="Mobile Navigation">
+    <a href="#/events" data-i18n="nav.events">Konzerte</a>
+    <a href="#/repertoire" data-i18n="nav.repertoire">Repertoire</a>
+    <a href="#/about" data-i18n="nav.about">Über uns</a>
+  </nav>
+
+  <script src="app.js"></script>
+</body>
+</html>

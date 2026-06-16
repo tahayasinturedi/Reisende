@@ -1,0 +1,49 @@
+{
+  "nav": {
+    "home":       "Start",
+    "events":     "Konzerte",
+    "repertoire": "Repertoire",
+    "about":      "Über uns"
+  },
+  "home": {
+    "label":    "Musik aus zwei Welten",
+    "subtitle": "Türkische Poesie. Europäische Klänge.",
+    "cta":      "Repertoire entdecken"
+  },
+  "events": {
+    "subtitle":    "Kommende und vergangene Auftritte",
+    "upcoming":    "Bevorstehend",
+    "past":        "Vergangen",
+    "empty":       "Zur Zeit keine Veranstaltungen geplant.",
+    "setlistTitle":"Programm",
+    "setlistHint": "Klicken Sie auf ein Stück, um die Texte zu lesen.",
+    "backToEvents":"Zurück zu den Konzerten",
+    "notFound":    "Konzert nicht gefunden."
+  },
+  "repertoire": {
+    "subtitle":  "Türkische Lieder & Eigenkompositionen",
+    "songs":     "Lieder",
+    "listView":  "Liste",
+    "gridView":  "Raster"
+  },
+  "about": {
+    "intro1":        "Reisende – ein Duo zwischen Istanbul und Wien, zwischen Muttersprache und Fernweh. Şebnem und Mira verbindet eine Leidenschaft für Grenzen, die man mit Klängen überwindet.",
+    "intro2":        "Gegründet 2022 in Berlin, hat das Duo bereits auf Bühnen in Deutschland, Österreich, der Schweiz und der Türkei gespielt und begeistert mit einem Programm, das Poesie, Folklore und zeitgenössische Akustikmusik vereint.",
+    "intro3":        "Ihre Konzerte sind Begegnungen: zwischen Sprachen, zwischen Kulturen, zwischen dem Vertrauten und dem Fremden.",
+    "member1Role":   "Gesang & Saz",
+    "member1Bio":    "Şebnem Yıldız stammt aus Ankara und lebt seit zehn Jahren in Berlin. Sie studierte Komposition am Hacettepe-Konservatorium und brachte die Klänge der anatolischen Folklore mit nach Europa.",
+    "member2Role":   "Gitarre & Kontrabass",
+    "member2Bio":    "Mira Kovač wuchs in Wien auf und studierte klassische Gitarre an der mdw. Ihre musikalischen Reisen führten sie durch den Balkan bis in den Nahen Osten, wo sie die Schnittstellen zwischen europäischer und orientalischer Musik entdeckte.",
+    "contactTitle":  "Kontakt",
+    "bookingLabel":  "Booking",
+    "pressLabel":    "Presse",
+    "instagramLabel":"Instagram"
+  },
+  "song": {
+    "back":            "Zurück zum Repertoire",
+    "modeParallel":    "Zweispaltig",
+    "modeInterleaved": "Zeilenweise",
+    "selectLang":      "Übersetzung wählen",
+    "notFound":        "Lied nicht gefunden."
+  }
+}

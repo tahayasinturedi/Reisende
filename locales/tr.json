@@ -1,0 +1,49 @@
+{
+  "nav": {
+    "home":       "Ana Sayfa",
+    "events":     "Konserler",
+    "repertoire": "Repertuar",
+    "about":      "Hakkımızda"
+  },
+  "home": {
+    "label":    "İki Dünyadan Müzik",
+    "subtitle": "Türk şiiri. Avrupa sesleri.",
+    "cta":      "Repertuarı Keşfet"
+  },
+  "events": {
+    "subtitle":    "Yaklaşan ve geçmiş etkinlikler",
+    "upcoming":    "Yaklaşan",
+    "past":        "Geçmiş",
+    "empty":       "Şu an planlanmış etkinlik yok.",
+    "setlistTitle":"Program",
+    "setlistHint": "Şarkıya tıklayarak sözlerini okuyabilirsiniz.",
+    "backToEvents":"Konserlere Dön",
+    "notFound":    "Etkinlik bulunamadı."
+  },
+  "repertoire": {
+    "subtitle":  "Türk şarkıları & özgün besteler",
+    "songs":     "Şarkı",
+    "listView":  "Liste",
+    "gridView":  "Izgara"
+  },
+  "about": {
+    "intro1":        "Reisende – İstanbul ile Viyana arasında, ana dil ile yurt özlemi arasında bir ikili. Şebnem ve Mira'yı müzikle aşılan sınırlara olan tutku bir araya getirdi.",
+    "intro2":        "2022'de Berlin'de kurulan duo, Almanya, Avusturya, İsviçre ve Türkiye'deki sahnelerde performans sergiledi; şiiri, folkloru ve çağdaş akustik müziği buluşturan programıyla hayranlarını büyüledi.",
+    "intro3":        "Konserleri birer buluşmadır: diller arasında, kültürler arasında, tanıdık ile yabancı arasında.",
+    "member1Role":   "Vokal & Saz",
+    "member1Bio":    "Şebnem Yıldız Ankara'dan. On yıldır Berlin'de yaşıyor. Hacettepe Konservatuvarı'nda kompozisyon okudu ve Anadolu folklorunun seslerini Avrupa'ya taşıdı.",
+    "member2Role":   "Gitar & Kontrbas",
+    "member2Bio":    "Mira Kovač Viyana'da büyüdü ve mdw'de klasik gitar okudu. Müzikal yolculukları onu Balkanlar'dan Orta Doğu'ya götürdü; burada Avrupa ve Doğu müziği arasındaki kesişim noktalarını keşfetti.",
+    "contactTitle":  "İletişim",
+    "bookingLabel":  "Rezervasyon",
+    "pressLabel":    "Basın",
+    "instagramLabel":"Instagram"
+  },
+  "song": {
+    "back":            "Repertuara Dön",
+    "modeParallel":    "İki Sütun",
+    "modeInterleaved": "Satır Satır",
+    "selectLang":      "Çeviri dili seçin",
+    "notFound":        "Şarkı bulunamadı."
+  }
+}

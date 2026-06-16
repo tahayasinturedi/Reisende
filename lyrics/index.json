@@ -1,0 +1,32 @@
+[
+  {
+    "id": "yolcu",
+    "title": "ASlinda",
+    "genre": "Folk",
+    "duration": "4:12"
+  },
+  {
+    "id": "elveda",
+    "title": "Gafil Gezme Şaşkın",
+    "genre": "Akustik",
+    "duration": "3:45"
+  },
+  {
+    "id": "mevsimler",
+    "title": "Mevsimler",
+    "genre": "Folk",
+    "duration": "5:02"
+  },
+  {
+    "id": "istanbul-yagmur",
+    "title": "İstanbul'da Yağmur",
+    "genre": "Akustik",
+    "duration": "4:38"
+  },
+  {
+    "id": "anadolu",
+    "title": "Anadolu",
+    "genre": "Folk",
+    "duration": "3:56"
+  }
+]

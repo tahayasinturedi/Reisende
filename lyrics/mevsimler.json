@@ -1,0 +1,83 @@
+[
+  {
+    "tr":  "Sonbahar düşer yapraklar gibi",
+    "de":  "Der Herbst fällt wie Blätter",
+    "en":  "Autumn falls like leaves drifting down",
+    "fr":  "L'automne tombe comme des feuilles",
+    "it":  "L'autunno cade come foglie",
+    "ar":  "الخريف يتساقط كالأوراق",
+    "ku":  "Payîz wek pelên daristanê dikeve",
+    "ukr": "Осінь падає, як листя"
+  },
+  {
+    "tr":  "Kış gelir sessizce, karlı",
+    "de":  "Der Winter kommt still und verschneit",
+    "en":  "Winter arrives quietly, draped in snow",
+    "fr":  "L'hiver vient silencieusement, enneigé",
+    "it":  "L'inverno arriva silenziosamente, innevato",
+    "ar":  "الشتاء يأتي بهدوء، مكسواً بالثلج",
+    "ku":  "Zivistan bêdeng û berfê tê",
+    "ukr": "Зима приходить тихо, вкрита снігом"
+  },
+  {
+    "tr":  "İlkbahar açar çiçekleriyle",
+    "de":  "Der Frühling blüht mit seinen Blumen auf",
+    "en":  "Spring opens wide with all its flowers",
+    "fr":  "Le printemps s'épanouit avec ses fleurs",
+    "it":  "La primavera si apre con i suoi fiori",
+    "ar":  "الربيع يتفتّح بأزهاره",
+    "ku":  "Bihar bi kulîlkên xwe vedibe",
+    "ukr": "Весна розкривається своїми квітами"
+  },
+  {
+    "tr":  "Yaz koşar gider kavurucu",
+    "de":  "Der glühende Sommer rennt davon",
+    "en":  "Summer races away, blazing and fierce",
+    "fr":  "L'été brûlant s'enfuit en courant",
+    "it":  "L'estate bruciante corre via",
+    "ar":  "الصيف الحارق يمضي مسرعاً",
+    "ku":  "Havîna germ dimeşe û diçe",
+    "ukr": "Пекуче літо мчить геть"
+  },
+  {},
+  {
+    "tr":  "Mevsimler döner, ben değişirim",
+    "de":  "Die Jahreszeiten kreisen, und ich verändere mich",
+    "en":  "Seasons turn, and I am changed",
+    "fr":  "Les saisons tournent et je me transforme",
+    "it":  "Le stagioni girano e io cambio",
+    "ar":  "الفصول تدور وأنا أتغيّر",
+    "ku":  "Demsalên sor û zivistanê dizivirin, ez jî diguhûrim",
+    "ukr": "Пори року змінюються, і я змінююся"
+  },
+  {
+    "tr":  "Anılar solar, yeni günler gelir",
+    "de":  "Erinnerungen verblassen, neue Tage kommen",
+    "en":  "Memories fade, new days arrive",
+    "fr":  "Les souvenirs s'effacent, de nouveaux jours viennent",
+    "it":  "I ricordi sbiadiscono, nuovi giorni arrivano",
+    "ar":  "الذكريات تبهت، وأيام جديدة تأتي",
+    "ku":  "Bîranîn şilf dibin, rojên nû tên",
+    "ukr": "Спогади блякнуть, приходять нові дні"
+  },
+  {
+    "tr":  "Her mevsim bir şarkı söyler bana",
+    "de":  "Jede Jahreszeit singt mir ein Lied",
+    "en":  "Every season sings a song just for me",
+    "fr":  "Chaque saison me chante une chanson",
+    "it":  "Ogni stagione mi canta una canzone",
+    "ar":  "كل فصل يُغنّي لي أغنية",
+    "ku":  "Her demsalê stranekê ji bo min distire",
+    "ukr": "Кожна пора року співає мені пісню"
+  },
+  {
+    "tr":  "Sen geldin, sen gittin, mevsimler geçti",
+    "de":  "Du kamst, du gingst, die Jahreszeiten vergingen",
+    "en":  "You came, you left, and the seasons passed",
+    "fr":  "Tu es venu, tu es parti, les saisons se sont écoulées",
+    "it":  "Sei venuto, sei andato, le stagioni sono passate",
+    "ar":  "جئت، ورحلت، ومضت الفصول",
+    "ku":  "Tu hatî, tu çûyî, demsalên derbas bûn",
+    "ukr": "Ти прийшов, ти пішов, і пори року минули"
+  }
+]

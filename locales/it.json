@@ -1,0 +1,49 @@
+{
+  "nav": {
+    "home":       "Home",
+    "events":     "Concerti",
+    "repertoire": "Repertorio",
+    "about":      "Chi siamo"
+  },
+  "home": {
+    "label":    "Musica da due mondi",
+    "subtitle": "Poesia turca. Sonorità europee.",
+    "cta":      "Scopri il repertorio"
+  },
+  "events": {
+    "subtitle":    "Concerti in programma e passati",
+    "upcoming":    "In programma",
+    "past":        "Passato",
+    "empty":       "Nessun evento in programma al momento.",
+    "setlistTitle":"Programma",
+    "setlistHint": "Clicca su un brano per leggere il testo.",
+    "backToEvents":"Torna ai concerti",
+    "notFound":    "Concerto non trovato."
+  },
+  "repertoire": {
+    "subtitle":  "Canzoni turche & composizioni originali",
+    "songs":     "canzoni",
+    "listView":  "Lista",
+    "gridView":  "Griglia"
+  },
+  "about": {
+    "intro1":        "Reisende – un duo tra Istanbul e Vienna, tra lingua madre e voglia di viaggiare. Şebnem e Mira sono unite da una passione per i confini superati attraverso la musica.",
+    "intro2":        "Fondato nel 2022 a Berlino, il duo si è già esibito su palcoscenici in Germania, Austria, Svizzera e Turchia, affascinando il pubblico con un programma che intreccia poesia, folklore e musica acustica contemporanea.",
+    "intro3":        "I loro concerti sono incontri: tra le lingue, tra le culture, tra il familiare e lo straniero.",
+    "member1Role":   "Voce & Saz",
+    "member1Bio":    "Şebnem Yıldız è di Ankara e vive a Berlino da dieci anni. Ha studiato composizione al Conservatorio Hacettepe e ha portato i suoni del folklore anatolico in Europa.",
+    "member2Role":   "Chitarra & Contrabbasso",
+    "member2Bio":    "Mira Kovač è cresciuta a Vienna e ha studiato chitarra classica alla mdw. I suoi viaggi musicali l'hanno portata dai Balcani al Medio Oriente, dove ha scoperto le intersezioni tra musica europea e orientale.",
+    "contactTitle":  "Contatti",
+    "bookingLabel":  "Prenotazioni",
+    "pressLabel":    "Stampa",
+    "instagramLabel":"Instagram"
+  },
+  "song": {
+    "back":            "Torna al repertorio",
+    "modeParallel":    "Due colonne",
+    "modeInterleaved": "Interlacciato",
+    "selectLang":      "Scegli traduzione",
+    "notFound":        "Canzone non trovata."
+  }
+}

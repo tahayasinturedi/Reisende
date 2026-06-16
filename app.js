@@ -192,8 +192,13 @@ async function renderEvents() {
   const localeMap = { de: 'de-DE', tr: 'tr-TR', fr: 'fr-FR', en: 'en-GB', it: 'it-IT' };
   const locale = localeMap[state.lang] || 'de-DE';
 
-  const items = events.length
-    ? events.map(ev => {
+  const today = new Date().toISOString().split('T')[0];
+  const upcoming = events.filter(ev => ev.date >= today).sort((a, b) => a.date.localeCompare(b.date));
+  const past     = events.filter(ev => ev.date <  today).sort((a, b) => b.date.localeCompare(a.date));
+  const sorted   = [...upcoming, ...past];
+
+  const items = sorted.length
+    ? sorted.map(ev => {
         const d    = new Date(ev.date);
         const past = d < new Date();
         const day  = String(d.getDate()).padStart(2, '0');

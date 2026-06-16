@@ -46,6 +46,29 @@ function download(filename, data) {
   a.click();
 }
 
+function readJsonFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      try { resolve(JSON.parse(e.target.result)); }
+      catch { reject(new Error('Geçersiz JSON dosyası.')); }
+    };
+    reader.onerror = () => reject(new Error('Dosya okunamadı.'));
+    reader.readAsText(file);
+  });
+}
+
+async function importJSON(endpoint, file, label) {
+  try {
+    const data = await readJsonFile(file);
+    const res  = await api('POST', endpoint, data, true);
+    await loadAll();
+    alert(`${res.count} ${label} başarıyla yüklendi.`);
+  } catch (e) {
+    alert('Hata: ' + e.message);
+  }
+}
+
 function fmtDate(dateStr) {
   const d = new Date(dateStr);
   return isNaN(d) ? dateStr : d.toLocaleDateString('tr-TR', { day:'2-digit', month:'short', year:'numeric' });
@@ -422,6 +445,18 @@ document.addEventListener('DOMContentLoaded', () => {
   /* Download buttons */
   $('btn-dl-songs').addEventListener('click', () => download('index.json', A.songs));
   $('btn-dl-events').addEventListener('click', () => download('events.json', A.events));
+
+  /* Upload buttons */
+  $('btn-ul-songs').addEventListener('click', () => $('file-songs').click());
+  $('btn-ul-events').addEventListener('click', () => $('file-events').click());
+  $('file-songs').addEventListener('change', e => {
+    if (e.target.files[0]) importJSON('/api/songs/import', e.target.files[0], 'şarkı');
+    e.target.value = '';
+  });
+  $('file-events').addEventListener('change', e => {
+    if (e.target.files[0]) importJSON('/api/events/import', e.target.files[0], 'konser');
+    e.target.value = '';
+  });
 
   /* Modal buttons */
   $('btn-close-modal').addEventListener('click', closeModal);

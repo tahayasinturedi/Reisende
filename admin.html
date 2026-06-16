@@ -344,11 +344,6 @@
   </header>
 
   <div class="admin-body">
-    <div class="notice notice-warn">
-      ⚠ Render ücretsiz planda değişiklikler bir sonraki deploy'a kadar geçerlidir.
-      Kalıcı kaydetmek için sayfanın altındaki <strong>JSON İndir</strong> butonlarını kullanın.
-    </div>
-
     <div class="tabs">
       <button class="tab-btn active" data-tab="songs">Şarkılar</button>
       <button class="tab-btn" data-tab="events">Konserler</button>
@@ -360,6 +355,8 @@
         <h2 class="section-title">Şarkılar</h2>
         <div style="display:flex;gap:.75rem;align-items:center;">
           <button class="btn-download" id="btn-dl-songs">JSON İndir ↓</button>
+          <button class="btn-download" id="btn-ul-songs">JSON Yükle ↑</button>
+          <input type="file" id="file-songs" accept=".json" style="display:none">
           <button class="btn-add" id="btn-add-song">+ Şarkı Ekle</button>
         </div>
       </div>
@@ -383,6 +380,8 @@
         <h2 class="section-title">Konserler</h2>
         <div style="display:flex;gap:.75rem;align-items:center;">
           <button class="btn-download" id="btn-dl-events">JSON İndir ↓</button>
+          <button class="btn-download" id="btn-ul-events">JSON Yükle ↑</button>
+          <input type="file" id="file-events" accept=".json" style="display:none">
           <button class="btn-add" id="btn-add-event">+ Konser Ekle</button>
         </div>
       </div>

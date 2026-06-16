@@ -115,6 +115,38 @@ app.get('/api/songs', async (_req, res, next) => {
   } catch (e) { next(e); }
 });
 
+app.post('/api/songs/import', guard, async (req, res, next) => {
+  const songs = req.body;
+  if (!Array.isArray(songs)) return res.status(400).json({ error: 'Dizi bekleniyor.' });
+  try {
+    for (const s of songs) {
+      await pool.query(
+        `INSERT INTO songs (id, title, genre, duration)
+         VALUES ($1,$2,$3,$4)
+         ON CONFLICT (id) DO UPDATE SET title=$2, genre=$3, duration=$4`,
+        [s.id, s.title, s.genre || null, s.duration || null]
+      );
+    }
+    res.json({ ok: true, count: songs.length });
+  } catch (e) { next(e); }
+});
+
+app.post('/api/events/import', guard, async (req, res, next) => {
+  const events = req.body;
+  if (!Array.isArray(events)) return res.status(400).json({ error: 'Dizi bekleniyor.' });
+  try {
+    for (const ev of events) {
+      await pool.query(
+        `INSERT INTO events (id, date, name, venue, city, setlist)
+         VALUES ($1,$2,$3,$4,$5,$6)
+         ON CONFLICT (id) DO UPDATE SET date=$2, name=$3, venue=$4, city=$5, setlist=$6`,
+        [ev.id, ev.date, ev.name, ev.venue || null, ev.city || null, JSON.stringify(ev.setlist || [])]
+      );
+    }
+    res.json({ ok: true, count: events.length });
+  } catch (e) { next(e); }
+});
+
 app.get('/api/songs/:id/lyrics', async (req, res, next) => {
   try {
     const { rows } = await pool.query('SELECT data FROM lyrics WHERE song_id=$1', [req.params.id]);

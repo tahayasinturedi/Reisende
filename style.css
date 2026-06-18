@@ -653,7 +653,7 @@ img  { max-width: 100%; display: block; }
   background: var(--sage-lighter);
   padding: 1.75rem 1.5rem;
   cursor: pointer;
-  transition: background var(--ease), transform var(--ease);
+  transition: background var(--ease), box-shadow var(--ease);
   border-radius: var(--radius);
   display: flex;
   flex-direction: column;
@@ -673,7 +673,7 @@ img  { max-width: 100%; display: block; }
   transform-origin: left;
 }
 
-.song-grid-item:hover { background: var(--sage-light); transform: translateY(-2px); }
+.song-grid-item:hover { background: var(--sage-light); box-shadow: 0 4px 12px rgba(0,0,0,0.07); }
 .song-grid-item:hover::after { transform: scaleX(1); }
 
 .song-grid-number {

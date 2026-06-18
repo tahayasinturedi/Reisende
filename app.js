@@ -84,7 +84,8 @@ async function handleRoute() {
   main.classList.remove('fade-up');
 
   if (page === 'song' && parts[1]) {
-    await renderSongDetail(parts[1]);
+    const fromEventId = parts[2] === 'from' ? parts[3] : null;
+    await renderSongDetail(parts[1], fromEventId);
   } else if (page === 'events' && parts[1]) {
     await renderEventDetail(parts[1]);
   } else if (page === 'events') {
@@ -216,6 +217,7 @@ async function renderEvents() {
             </div>
             <div class="event-actions">
               <span class="badge ${past ? 'badge-past' : 'badge-upcoming'}">${esc(t(past ? 'events.past' : 'events.upcoming'))}</span>
+              ${ev.poster ? `<button class="btn-see-poster" data-poster="${ev.poster}" data-name="${esc(ev.name)}">${esc(t('events.seePoster'))}</button>` : ''}
               <span class="event-arrow">→</span>
             </div>
           </div>`;
@@ -237,6 +239,13 @@ async function renderEvents() {
     const go = () => navigate(`/events/${el.dataset.eventId}`);
     el.addEventListener('click', go);
     el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+  });
+
+  $$('.btn-see-poster').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      openLightbox(btn.dataset.poster, btn.dataset.name);
+    });
   });
 }
 
@@ -274,13 +283,16 @@ async function renderEventDetail(id) {
     <div class="page event-detail">
       <div class="container">
         <a href="#/events" class="song-back">← <span data-i18n="events.backToEvents">${esc(t('events.backToEvents'))}</span></a>
-        <div class="event-detail-header">
-          <div class="event-detail-meta">
-            <span class="badge ${past ? 'badge-past' : 'badge-upcoming'}">${esc(t(past ? 'events.past' : 'events.upcoming'))}</span>
-            <span class="event-detail-date">${dateStr}</span>
+        <div class="event-detail-header${ev.poster ? ' has-poster' : ''}">
+          <div class="event-detail-text">
+            <div class="event-detail-meta">
+              <span class="badge ${past ? 'badge-past' : 'badge-upcoming'}">${esc(t(past ? 'events.past' : 'events.upcoming'))}</span>
+              <span class="event-detail-date">${dateStr}</span>
+            </div>
+            <h1 class="event-detail-title">${esc(ev.name)}</h1>
+            <p class="event-detail-venue">${esc(ev.venue)} · ${esc(ev.city)}</p>
           </div>
-          <h1 class="event-detail-title">${esc(ev.name)}</h1>
-          <p class="event-detail-venue">${esc(ev.venue)} · ${esc(ev.city)}</p>
+          ${ev.poster ? `<button class="btn-see-poster" id="btn-poster">${esc(t('events.seePoster'))}</button>` : ''}
         </div>
 
         <div class="setlist-section">
@@ -294,11 +306,41 @@ async function renderEventDetail(id) {
     </div>`;
 
   $$('[data-song-id]').forEach(el => {
-    const go = () => navigate(`/song/${el.dataset.songId}`);
+    const go = () => navigate(`/song/${el.dataset.songId}/from/${id}`);
     el.addEventListener('click', go);
     el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
   });
+
+  const posterBtn = $('#btn-poster');
+  if (posterBtn && ev.poster) {
+    posterBtn.addEventListener('click', () => openLightbox(ev.poster, ev.name));
+  }
+
   updateNavActive();
+}
+
+function openLightbox(src, alt) {
+  const lb = document.createElement('div');
+  lb.className = 'lightbox';
+  lb.innerHTML = `
+    <div class="lightbox-backdrop"></div>
+    <div class="lightbox-inner">
+      <button class="lightbox-close" aria-label="Kapat">×</button>
+      <img src="${src}" alt="${esc(alt)}">
+    </div>`;
+  document.body.appendChild(lb);
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => lb.classList.add('open'));
+  const close = () => {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+    lb.addEventListener('transitionend', () => lb.remove(), { once: true });
+  };
+  lb.querySelector('.lightbox-close').addEventListener('click', close);
+  lb.querySelector('.lightbox-backdrop').addEventListener('click', close);
+  document.addEventListener('keydown', function onEsc(e) {
+    if (e.key === 'Escape') { close(); document.removeEventListener('keydown', onEsc); }
+  });
 }
 
 async function renderRepertoire() {
@@ -419,7 +461,7 @@ function renderAbout() {
 }
 
 /* ── Song Detail ── */
-async function renderSongDetail(id) {
+async function renderSongDetail(id, fromEventId = null) {
   let song = null;
   let manifest = [];
   try {
@@ -445,7 +487,7 @@ async function renderSongDetail(id) {
   $('#main-content').innerHTML = `
     <div class="page song-detail">
       <div class="container">
-        <a href="#/repertoire" class="song-back">← <span data-i18n="song.back">${esc(t('song.back'))}</span></a>
+        <a href="${fromEventId ? `#/events/${fromEventId}` : '#/repertoire'}" class="song-back">← <span data-i18n="${fromEventId ? 'song.backToEvent' : 'song.back'}">${esc(t(fromEventId ? 'song.backToEvent' : 'song.back'))}</span></a>
         <div class="song-detail-header">
           <div>
             <h1 class="song-detail-title">${esc(meta.title || id)}</h1>

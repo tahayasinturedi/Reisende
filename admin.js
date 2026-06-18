@@ -270,6 +270,7 @@ function openEventModal(ev = null) {
   A.mode    = 'event';
   A.editing = ev;
   A.setlist = [...(ev?.setlist || [])];
+  A.poster  = ev?.poster || null;
 
   $('modal-title').textContent = ev ? 'Konser Düzenle' : 'Yeni Konser';
   $('modal-body').innerHTML = `
@@ -293,6 +294,21 @@ function openEventModal(ev = null) {
         <input id="f-evcity" type="text" value="${esc(ev?.city || '')}" placeholder="Berlin, DE">
       </div>
     </div>
+    <div class="field">
+      <label>Afiş</label>
+      <div class="poster-upload-area" id="poster-area">
+        ${A.poster
+          ? `<img id="poster-preview" src="${A.poster}" alt="Önizleme">
+             <div style="display:flex;flex-direction:column;gap:.5rem;">
+               <button class="btn-poster-select" id="btn-poster-select" type="button">Değiştir</button>
+               <button class="btn-poster-remove" id="btn-poster-remove" type="button">Kaldır</button>
+             </div>`
+          : `<div class="poster-placeholder"><span>Resim seçilmedi</span></div>
+             <button class="btn-poster-select" id="btn-poster-select" type="button">Dosya Seç</button>`
+        }
+        <input type="file" id="f-poster" accept="image/*" style="display:none">
+      </div>
+    </div>
     <div>
       <div class="setlist-label">Setlist <span style="opacity:.4;font-size:.75rem;margin-left:.5rem;">(sürükle ile sırala)</span></div>
       <div id="setlist-drag-zone"></div>
@@ -301,7 +317,46 @@ function openEventModal(ev = null) {
     </div>`;
 
   renderSetlistEditor();
+  bindPosterUpload();
   openModal();
+}
+
+function bindPosterUpload() {
+  const selectBtn = $('btn-poster-select');
+  const removeBtn = $('btn-poster-remove');
+  const fileInput = $('f-poster');
+
+  if (selectBtn) selectBtn.addEventListener('click', () => fileInput.click());
+
+  fileInput.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      A.poster = ev.target.result;
+      $('poster-area').innerHTML = `
+        <img id="poster-preview" src="${A.poster}" alt="Önizleme">
+        <div style="display:flex;flex-direction:column;gap:.5rem;">
+          <button class="btn-poster-select" id="btn-poster-select" type="button">Değiştir</button>
+          <button class="btn-poster-remove" id="btn-poster-remove" type="button">Kaldır</button>
+        </div>
+        <input type="file" id="f-poster" accept="image/*" style="display:none">`;
+      bindPosterUpload();
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  });
+
+  if (removeBtn) {
+    removeBtn.addEventListener('click', () => {
+      A.poster = null;
+      $('poster-area').innerHTML = `
+        <div class="poster-placeholder"><span>Resim seçilmedi</span></div>
+        <button class="btn-poster-select" id="btn-poster-select" type="button">Dosya Seç</button>
+        <input type="file" id="f-poster" accept="image/*" style="display:none">`;
+      bindPosterUpload();
+    });
+  }
 }
 
 function renderSetlistEditor() {
@@ -374,7 +429,7 @@ async function saveEvent() {
 
   const id = A.editing?.id || `${slugify(city.split(',')[0])}-${new Date(date).getFullYear()}`;
 
-  const payload = { id, date, name, venue, city, setlist: A.setlist };
+  const payload = { id, date, name, venue, city, setlist: A.setlist, poster: A.poster || null };
 
   try {
     setSaving(true);

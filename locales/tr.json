@@ -18,6 +18,7 @@
     "setlistTitle":"Program",
     "setlistHint": "Şarkıya tıklayarak sözlerini okuyabilirsiniz.",
     "backToEvents":"Konserlere Dön",
+    "seePoster":   "Afişi Gör",
     "notFound":    "Etkinlik bulunamadı."
   },
   "repertoire": {
@@ -43,6 +44,7 @@
   },
   "song": {
     "back":            "Repertuara Dön",
+    "backToEvent":     "Programa Geri Dön",
     "modeParallel":    "İki Sütun",
     "modeInterleaved": "Satır Satır",
     "selectLang":      "Çeviri dili seçin",

@@ -18,6 +18,7 @@
     "setlistTitle":"Programme",
     "setlistHint": "Click a song title to read the lyrics.",
     "backToEvents":"Back to concerts",
+    "seePoster":   "View Poster",
     "notFound":    "Event not found."
   },
   "repertoire": {
@@ -43,6 +44,7 @@
   },
   "song": {
     "back":            "Back to repertoire",
+    "backToEvent":     "Back to Programme",
     "modeParallel":    "Two columns",
     "modeInterleaved": "Interleaved",
     "selectLang":      "Choose translation",

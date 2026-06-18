@@ -42,8 +42,10 @@ async function initDB() {
       venue      TEXT,
       city       TEXT,
       setlist    JSONB DEFAULT '[]',
+      poster     TEXT,
       created_at TIMESTAMPTZ DEFAULT NOW()
     );
+    ALTER TABLE events ADD COLUMN IF NOT EXISTS poster TEXT;
   `);
 
   /* Seed from JSON files if DB is empty */
@@ -137,10 +139,10 @@ app.post('/api/events/import', guard, async (req, res, next) => {
   try {
     for (const ev of events) {
       await pool.query(
-        `INSERT INTO events (id, date, name, venue, city, setlist)
-         VALUES ($1,$2,$3,$4,$5,$6)
-         ON CONFLICT (id) DO UPDATE SET date=$2, name=$3, venue=$4, city=$5, setlist=$6`,
-        [ev.id, ev.date, ev.name, ev.venue || null, ev.city || null, JSON.stringify(ev.setlist || [])]
+        `INSERT INTO events (id, date, name, venue, city, setlist, poster)
+         VALUES ($1,$2,$3,$4,$5,$6,$7)
+         ON CONFLICT (id) DO UPDATE SET date=$2, name=$3, venue=$4, city=$5, setlist=$6, poster=$7`,
+        [ev.id, ev.date, ev.name, ev.venue || null, ev.city || null, JSON.stringify(ev.setlist || []), ev.poster || null]
       );
     }
     res.json({ ok: true, count: events.length });
@@ -204,18 +206,18 @@ app.delete('/api/songs/:id', guard, async (req, res, next) => {
 app.get('/api/events', async (_req, res, next) => {
   try {
     const { rows } = await pool.query(
-      'SELECT id, date, name, venue, city, setlist FROM events ORDER BY date ASC'
+      'SELECT id, date, name, venue, city, setlist, poster FROM events ORDER BY date ASC'
     );
     res.json(rows);
   } catch (e) { next(e); }
 });
 
 app.post('/api/events', guard, async (req, res, next) => {
-  const { id, date, name, venue, city, setlist } = req.body;
+  const { id, date, name, venue, city, setlist, poster } = req.body;
   try {
     await pool.query(
-      'INSERT INTO events (id, date, name, venue, city, setlist) VALUES ($1,$2,$3,$4,$5,$6)',
-      [id, date, name, venue || null, city || null, JSON.stringify(setlist || [])]
+      'INSERT INTO events (id, date, name, venue, city, setlist, poster) VALUES ($1,$2,$3,$4,$5,$6,$7)',
+      [id, date, name, venue || null, city || null, JSON.stringify(setlist || []), poster || null]
     );
     res.json({ ok: true });
   } catch (e) {
@@ -225,11 +227,11 @@ app.post('/api/events', guard, async (req, res, next) => {
 });
 
 app.put('/api/events/:id', guard, async (req, res, next) => {
-  const { id, date, name, venue, city, setlist } = req.body;
+  const { id, date, name, venue, city, setlist, poster } = req.body;
   try {
     const { rowCount } = await pool.query(
-      'UPDATE events SET id=$1, date=$2, name=$3, venue=$4, city=$5, setlist=$6 WHERE id=$7',
-      [id, date, name, venue || null, city || null, JSON.stringify(setlist || []), req.params.id]
+      'UPDATE events SET id=$1, date=$2, name=$3, venue=$4, city=$5, setlist=$6, poster=$7 WHERE id=$8',
+      [id, date, name, venue || null, city || null, JSON.stringify(setlist || []), poster ?? null, req.params.id]
     );
     if (!rowCount) return res.status(404).json({ error: 'Bulunamadı.' });
     res.json({ ok: true });

@@ -18,6 +18,7 @@
     "setlistTitle":"Programm",
     "setlistHint": "Klicken Sie auf ein Stück, um die Texte zu lesen.",
     "backToEvents":"Zurück zu den Konzerten",
+    "seePoster":   "Plakat ansehen",
     "notFound":    "Konzert nicht gefunden."
   },
   "repertoire": {
@@ -43,6 +44,7 @@
   },
   "song": {
     "back":            "Zurück zum Repertoire",
+    "backToEvent":     "Zurück zum Programm",
     "modeParallel":    "Zweispaltig",
     "modeInterleaved": "Zeilenweise",
     "selectLang":      "Übersetzung wählen",

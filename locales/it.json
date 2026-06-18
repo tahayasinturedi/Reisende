@@ -18,6 +18,7 @@
     "setlistTitle":"Programma",
     "setlistHint": "Clicca su un brano per leggere il testo.",
     "backToEvents":"Torna ai concerti",
+    "seePoster":   "Vedi il manifesto",
     "notFound":    "Concerto non trovato."
   },
   "repertoire": {
@@ -43,6 +44,7 @@
   },
   "song": {
     "back":            "Torna al repertorio",
+    "backToEvent":     "Torna al programma",
     "modeParallel":    "Due colonne",
     "modeInterleaved": "Interlacciato",
     "selectLang":      "Scegli traduzione",

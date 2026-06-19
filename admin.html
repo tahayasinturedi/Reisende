@@ -366,6 +366,36 @@
       text-decoration: underline;
     }
     .btn-poster-remove:hover { opacity: 1; }
+
+    /* ── Gallery ── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .photo-card {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--sage-lighter);
+      background: var(--off-white);
+      cursor: grab;
+      user-select: none;
+      transition: outline var(--ease), opacity var(--ease);
+    }
+    .photo-card.drag-over { outline: 2px dashed var(--sage); }
+    .photo-card.dragging  { opacity: 0.35; }
+    .photo-card img { width: 100%; height: 120px; object-fit: cover; display: block; pointer-events: none; }
+    .photo-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.35rem 0.5rem;
+    }
+    .photo-card-order { font-size: 0.625rem; color: var(--sage); opacity: 0.6; font-family: var(--font-h); }
+    .btn-photo-delete { font-size: 0.6875rem; color: var(--red); opacity: 0.4; letter-spacing: 0.06em; text-transform: uppercase; transition: opacity var(--ease); }
+    .btn-photo-delete:hover { opacity: 1; }
+    .gallery-empty { text-align: center; padding: 3rem; opacity: 0.3; font-style: italic; margin-top: 1.5rem; }
   </style>
 </head>
 <body>
@@ -394,6 +424,7 @@
     <div class="tabs">
       <button class="tab-btn active" data-tab="songs">Şarkılar</button>
       <button class="tab-btn" data-tab="events">Konserler</button>
+      <button class="tab-btn" data-tab="gallery">Galeri</button>
     </div>
 
     <!-- Songs -->
@@ -444,6 +475,18 @@
         </thead>
         <tbody id="events-tbody"></tbody>
       </table>
+    </div>
+    <!-- Gallery -->
+    <div class="tab-content" id="tab-gallery">
+      <div class="section-header">
+        <h2 class="section-title">Galeri</h2>
+        <div style="display:flex;gap:.75rem;align-items:center;">
+          <span style="font-size:.75rem;opacity:.4;">Sürükleyerek sıralayabilirsin</span>
+          <button class="btn-add" id="btn-add-photo">+ Fotoğraf Ekle</button>
+          <input type="file" id="file-photo" accept="image/*" style="display:none" multiple>
+        </div>
+      </div>
+      <div class="gallery-grid" id="gallery-grid"></div>
     </div>
   </div>
 </div>

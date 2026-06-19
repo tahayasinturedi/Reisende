@@ -46,6 +46,12 @@ async function initDB() {
       created_at TIMESTAMPTZ DEFAULT NOW()
     );
     ALTER TABLE events ADD COLUMN IF NOT EXISTS poster TEXT;
+    CREATE TABLE IF NOT EXISTS photos (
+      id         TEXT PRIMARY KEY,
+      data       TEXT NOT NULL,
+      sort_order INT DEFAULT 0,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    );
   `);
 
   /* Seed from JSON files if DB is empty */
@@ -241,6 +247,48 @@ app.put('/api/events/:id', guard, async (req, res, next) => {
 app.delete('/api/events/:id', guard, async (req, res, next) => {
   try {
     await pool.query('DELETE FROM events WHERE id=$1', [req.params.id]);
+    res.json({ ok: true });
+  } catch (e) { next(e); }
+});
+
+/* ── Photos ── */
+app.get('/api/photos', async (_req, res, next) => {
+  try {
+    const { rows } = await pool.query(
+      'SELECT id, data, sort_order FROM photos ORDER BY sort_order ASC, created_at ASC'
+    );
+    res.json(rows);
+  } catch (e) { next(e); }
+});
+
+app.post('/api/photos', guard, async (req, res, next) => {
+  const { id, data, sort_order } = req.body;
+  try {
+    await pool.query(
+      'INSERT INTO photos (id, data, sort_order) VALUES ($1,$2,$3)',
+      [id, data, sort_order ?? 0]
+    );
+    res.json({ ok: true });
+  } catch (e) {
+    if (e.code === '23505') return res.status(409).json({ error: 'Bu ID zaten var.' });
+    next(e);
+  }
+});
+
+app.put('/api/photos/reorder', guard, async (req, res, next) => {
+  const items = req.body;
+  if (!Array.isArray(items)) return res.status(400).json({ error: 'Dizi bekleniyor.' });
+  try {
+    for (const item of items) {
+      await pool.query('UPDATE photos SET sort_order=$1 WHERE id=$2', [item.sort_order, item.id]);
+    }
+    res.json({ ok: true });
+  } catch (e) { next(e); }
+});
+
+app.delete('/api/photos/:id', guard, async (req, res, next) => {
+  try {
+    await pool.query('DELETE FROM photos WHERE id=$1', [req.params.id]);
     res.json({ ok: true });
   } catch (e) { next(e); }
 });

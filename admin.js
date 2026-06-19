@@ -2,14 +2,16 @@
 
 /* ── State ── */
 const A = {
-  token:    localStorage.getItem('admin-token') || '',
-  songs:    [],
-  events:   [],
-  tab:      'songs',
-  mode:     null,       // 'song' | 'event'
-  editing:  null,       // current item being edited (null = new)
-  setlist:  [],         // current setlist in event modal
-  dragSrc:  null        // drag-and-drop source element
+  token:       localStorage.getItem('admin-token') || '',
+  songs:       [],
+  events:      [],
+  photos:      [],
+  tab:         'songs',
+  mode:        null,       // 'song' | 'event'
+  editing:     null,       // current item being edited (null = new)
+  setlist:     [],         // current setlist in event modal
+  dragSrc:     null,       // setlist drag source
+  photoDragSrc: null       // gallery drag source
 };
 
 /* ── API ── */
@@ -103,12 +105,14 @@ async function showPanel() {
 }
 
 async function loadAll() {
-  [A.songs, A.events] = await Promise.all([
+  [A.songs, A.events, A.photos] = await Promise.all([
     api('GET', '/api/songs'),
-    api('GET', '/api/events')
+    api('GET', '/api/events'),
+    api('GET', '/api/photos')
   ]);
   renderSongs();
   renderEvents();
+  renderGallery();
 }
 
 /* ── Songs ── */
@@ -359,6 +363,85 @@ function bindPosterUpload() {
   }
 }
 
+/* ── Gallery ── */
+function renderGallery() {
+  const grid = $('gallery-grid');
+  if (!grid) return;
+  if (!A.photos.length) {
+    grid.innerHTML = '<div class="gallery-empty">Henüz fotoğraf yok. "Fotoğraf Ekle" ile yükleyebilirsin.</div>';
+    return;
+  }
+  grid.innerHTML = A.photos.map((p, i) => `
+    <div class="photo-card" draggable="true" data-photo-id="${esc(p.id)}">
+      <img src="${p.data}" alt="">
+      <div class="photo-card-footer">
+        <span class="photo-card-order">${String(i + 1).padStart(2, '0')}</span>
+        <button class="btn-photo-delete" data-photo-del="${esc(p.id)}">Sil</button>
+      </div>
+    </div>`).join('');
+  initPhotoDnD();
+}
+
+function initPhotoDnD() {
+  const cards = document.querySelectorAll('.photo-card');
+  cards.forEach(card => {
+    card.addEventListener('dragstart', e => {
+      A.photoDragSrc = card;
+      card.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+      document.querySelectorAll('.photo-card').forEach(c => c.classList.remove('drag-over'));
+    });
+    card.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      document.querySelectorAll('.photo-card').forEach(c => c.classList.remove('drag-over'));
+      if (card !== A.photoDragSrc) card.classList.add('drag-over');
+    });
+    card.addEventListener('drop', async e => {
+      e.preventDefault();
+      if (!A.photoDragSrc || A.photoDragSrc === card) return;
+      const fromId = A.photoDragSrc.dataset.photoId;
+      const toId   = card.dataset.photoId;
+      const from   = A.photos.findIndex(p => p.id === fromId);
+      const to     = A.photos.findIndex(p => p.id === toId);
+      if (from === -1 || to === -1) return;
+      A.photos.splice(to, 0, A.photos.splice(from, 1)[0]);
+      renderGallery();
+      try {
+        await api('PUT', '/api/photos/reorder',
+          A.photos.map((p, i) => ({ id: p.id, sort_order: i })), true);
+      } catch (e) { alert('Sıralama kaydedilemedi: ' + e.message); }
+    });
+  });
+}
+
+async function addPhotos(files) {
+  for (const file of files) {
+    const data = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = e => resolve(e.target.result);
+      reader.onerror = () => reject(new Error('Dosya okunamadı.'));
+      reader.readAsDataURL(file);
+    });
+    const id = `photo-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+    try {
+      await api('POST', '/api/photos', { id, data, sort_order: A.photos.length }, true);
+    } catch (e) { alert('Yükleme hatası: ' + e.message); return; }
+  }
+  await loadAll();
+}
+
+async function deletePhoto(id) {
+  if (!confirm('Bu fotoğraf silinsin mi?')) return;
+  try {
+    await api('DELETE', `/api/photos/${id}`, null, true);
+    await loadAll();
+  } catch (e) { alert(e.message); }
+}
+
 function renderSetlistEditor() {
   const zone = $('setlist-drag-zone');
   const avail = $('available-songs');
@@ -496,6 +579,12 @@ document.addEventListener('DOMContentLoaded', () => {
   /* Add buttons */
   $('btn-add-song').addEventListener('click', () => openSongModal());
   $('btn-add-event').addEventListener('click', () => openEventModal());
+  $('btn-add-photo').addEventListener('click', () => $('file-photo').click());
+  $('file-photo').addEventListener('change', e => {
+    const files = [...e.target.files];
+    e.target.value = '';
+    if (files.length) addPhotos(files);
+  });
 
   /* Download buttons */
   $('btn-dl-songs').addEventListener('click', () => download('index.json', A.songs));
@@ -534,6 +623,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (action === 'del-song')   deleteSong(id);
     if (action === 'edit-event') openEventModal(A.events.find(ev => ev.id === id));
     if (action === 'del-event')  deleteEvent(id);
+
+    const photoDelId = e.target.dataset.photoDel;
+    if (photoDelId) deletePhoto(photoDelId);
 
     /* Setlist: remove */
     const removeId = e.target.dataset.slRemove;

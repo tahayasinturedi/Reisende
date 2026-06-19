@@ -155,12 +155,17 @@ function parseVerses(lines) {
 /* ── Pages ── */
 async function renderHome() {
   let nextEvent = null;
+  let photos = [];
   try {
-    const today  = new Date().toISOString().split('T')[0];
-    const events = await loadEvents();
+    const today = new Date().toISOString().split('T')[0];
+    const [events, photosData] = await Promise.all([
+      loadEvents(),
+      fetch('/api/photos').then(r => r.json()).catch(() => [])
+    ]);
     nextEvent = events
       .filter(ev => ev.date >= today)
       .sort((a, b) => a.date.localeCompare(b.date))[0] || null;
+    photos = Array.isArray(photosData) ? photosData : [];
   } catch (_) {}
 
   const localeMap = { de: 'de-DE', tr: 'tr-TR', fr: 'fr-FR', en: 'en-GB', it: 'it-IT' };
@@ -171,6 +176,14 @@ async function renderHome() {
       <span class="hero-next-date">${new Date(nextEvent.date).toLocaleDateString(locale, { day: '2-digit', month: 'short', year: 'numeric' })}</span>
       <span class="hero-next-name">${esc(nextEvent.name)}</span>
     </a>` : '';
+
+  const photoItems = photos.map(p =>
+    `<button class="photo-strip-item" data-photo-id="${esc(p.id)}"><img src="${p.data}" alt=""></button>`
+  ).join('');
+
+  const photoStrip = photos.length
+    ? `<div class="photo-strip"><div class="photo-track">${photoItems}${photoItems}</div></div>`
+    : '';
 
   $('#main-content').innerHTML = `
     <section class="hero page">
@@ -183,7 +196,16 @@ async function renderHome() {
           <a href="#/repertoire" class="hero-cta" data-i18n="home.cta">${esc(t('home.cta'))}</a>
         </div>
       </div>
-    </section>`;
+    </section>
+    ${photoStrip}`;
+
+  const photoItems_nav = photos.map(p => ({ src: p.data, alt: '' }));
+  $$('.photo-strip-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = photos.findIndex(p => p.id === btn.dataset.photoId);
+      if (idx !== -1) openLightbox(photos[idx].data, '', photoItems_nav, idx);
+    });
+  });
 }
 
 async function renderEvents() {
@@ -319,28 +341,52 @@ async function renderEventDetail(id) {
   updateNavActive();
 }
 
-function openLightbox(src, alt) {
+function openLightbox(src, alt, items = null, startIndex = 0) {
+  const hasNav = items && items.length > 1;
+  let idx = startIndex;
+
   const lb = document.createElement('div');
   lb.className = 'lightbox';
   lb.innerHTML = `
     <div class="lightbox-backdrop"></div>
+    ${hasNav ? '<button class="lightbox-prev" aria-label="Önceki">&#8249;</button>' : ''}
     <div class="lightbox-inner">
       <button class="lightbox-close" aria-label="Kapat">×</button>
       <img src="${src}" alt="${esc(alt)}">
-    </div>`;
+    </div>
+    ${hasNav ? '<button class="lightbox-next" aria-label="Sonraki">&#8250;</button>' : ''}`;
   document.body.appendChild(lb);
   document.body.style.overflow = 'hidden';
   requestAnimationFrame(() => lb.classList.add('open'));
+
+  const imgEl = lb.querySelector('img');
+
+  function goTo(newIdx) {
+    idx = ((newIdx % items.length) + items.length) % items.length;
+    imgEl.src = items[idx].src;
+    imgEl.alt = esc(items[idx].alt || '');
+  }
+
+  let onKey;
   const close = () => {
     lb.classList.remove('open');
     document.body.style.overflow = '';
+    document.removeEventListener('keydown', onKey);
     lb.addEventListener('transitionend', () => lb.remove(), { once: true });
   };
+  onKey = e => {
+    if (e.key === 'Escape') close();
+    if (hasNav && e.key === 'ArrowLeft')  goTo(idx - 1);
+    if (hasNav && e.key === 'ArrowRight') goTo(idx + 1);
+  };
+
   lb.querySelector('.lightbox-close').addEventListener('click', close);
   lb.querySelector('.lightbox-backdrop').addEventListener('click', close);
-  document.addEventListener('keydown', function onEsc(e) {
-    if (e.key === 'Escape') { close(); document.removeEventListener('keydown', onEsc); }
-  });
+  if (hasNav) {
+    lb.querySelector('.lightbox-prev').addEventListener('click', e => { e.stopPropagation(); goTo(idx - 1); });
+    lb.querySelector('.lightbox-next').addEventListener('click', e => { e.stopPropagation(); goTo(idx + 1); });
+  }
+  document.addEventListener('keydown', onKey);
 }
 
 async function renderRepertoire() {

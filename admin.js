@@ -110,7 +110,7 @@ async function loadAll() {
     api('GET', '/api/songs'),
     api('GET', '/api/events'),
     api('GET', '/api/photos'),
-    api('GET', '/api/messages')
+    api('GET', '/api/messages').catch(() => [])
   ]);
   renderSongs();
   renderEvents();

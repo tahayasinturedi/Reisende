@@ -52,6 +52,13 @@ async function initDB() {
       sort_order INT DEFAULT 0,
       created_at TIMESTAMPTZ DEFAULT NOW()
     );
+    CREATE TABLE IF NOT EXISTS messages (
+      id         SERIAL PRIMARY KEY,
+      name       TEXT NOT NULL,
+      email      TEXT NOT NULL,
+      message    TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    );
   `);
 
   /* Seed from JSON files if DB is empty */
@@ -289,6 +296,33 @@ app.put('/api/photos/reorder', guard, async (req, res, next) => {
 app.delete('/api/photos/:id', guard, async (req, res, next) => {
   try {
     await pool.query('DELETE FROM photos WHERE id=$1', [req.params.id]);
+    res.json({ ok: true });
+  } catch (e) { next(e); }
+});
+
+/* ── Contact ── */
+app.post('/api/contact', async (req, res, next) => {
+  const { name, email, message } = req.body;
+  if (!name || !email || !message) return res.status(400).json({ error: 'Tüm alanlar zorunludur.' });
+  try {
+    await pool.query(
+      'INSERT INTO messages (name, email, message) VALUES ($1,$2,$3)',
+      [name.trim(), email.trim(), message.trim()]
+    );
+    res.json({ ok: true });
+  } catch (e) { next(e); }
+});
+
+app.get('/api/messages', guard, async (_req, res, next) => {
+  try {
+    const { rows } = await pool.query('SELECT * FROM messages ORDER BY created_at DESC');
+    res.json(rows);
+  } catch (e) { next(e); }
+});
+
+app.delete('/api/messages/:id', guard, async (req, res, next) => {
+  try {
+    await pool.query('DELETE FROM messages WHERE id=$1', [req.params.id]);
     res.json({ ok: true });
   } catch (e) { next(e); }
 });

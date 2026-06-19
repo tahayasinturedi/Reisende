@@ -3,7 +3,8 @@
     "home":       "Ana Sayfa",
     "events":     "Konserler",
     "repertoire": "Repertuar",
-    "about":      "Hakkımızda"
+    "about":      "Hakkımızda",
+    "contact":    "İletişim"
   },
   "home": {
     "label":    "İki Dünyadan Müzik",
@@ -41,6 +42,15 @@
     "bookingLabel":  "Rezervasyon",
     "pressLabel":    "Basın",
     "instagramLabel":"Instagram"
+  },
+  "contact": {
+    "intro":   "Bir sorunuz, rezervasyon talebiniz ya da işbirliği fikriniz mi var? Bize ulaşın.",
+    "name":    "Ad Soyad",
+    "email":   "E-posta",
+    "message": "Mesaj",
+    "send":    "Gönder",
+    "success": "Mesajınız ulaştı, teşekkürler!",
+    "error":   "Bir hata oluştu, tekrar deneyin."
   },
   "song": {
     "back":            "Repertuara Dön",

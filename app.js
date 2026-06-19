@@ -93,7 +93,9 @@ async function handleRoute() {
   } else if (page === 'repertoire') {
     await renderRepertoire();
   } else if (page === 'about') {
-    renderAbout();
+    await renderAbout();
+  } else if (page === 'contact') {
+    renderContact();
   } else {
     await renderHome();
   }
@@ -454,7 +456,18 @@ async function renderRepertoire() {
   });
 }
 
-function renderAbout() {
+async function renderAbout() {
+  let photos = [];
+  try {
+    photos = await fetch('/api/photos').then(r => r.json()).catch(() => []);
+    if (!Array.isArray(photos)) photos = [];
+  } catch (_) {}
+
+  const photoGridHTML = photos.length ? `
+    <div class="about-photo-grid">
+      ${photos.map(p => `<button class="about-photo-item" data-photo-id="${esc(p.id)}"><img src="${p.data}" alt=""></button>`).join('')}
+    </div>` : '';
+
   $('#main-content').innerHTML = `
     <div class="page about-page">
       <div class="container">
@@ -485,6 +498,7 @@ function renderAbout() {
             </div>
           </div>
         </div>
+        ${photoGridHTML}
         <div class="contact-section">
           <h2 data-i18n="about.contactTitle">${esc(t('about.contactTitle'))}</h2>
           <div class="contact-grid">
@@ -504,6 +518,84 @@ function renderAbout() {
         </div>
       </div>
     </div>`;
+
+  if (photos.length) {
+    const navItems = photos.map(p => ({ src: p.data, alt: '' }));
+    $$('.about-photo-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = photos.findIndex(p => p.id === btn.dataset.photoId);
+        if (idx !== -1) openLightbox(photos[idx].data, '', navItems, idx);
+      });
+    });
+  }
+}
+
+/* ── Contact ── */
+function renderContact() {
+  $('#main-content').innerHTML = `
+    <div class="page contact-page">
+      <div class="container">
+        <div class="page-header">
+          <h1 data-i18n="nav.contact">${esc(t('nav.contact'))}</h1>
+          <p data-i18n="contact.intro">${esc(t('contact.intro'))}</p>
+        </div>
+        <div class="contact-page-grid">
+          <div class="contact-page-info">
+            <div class="contact-item">
+              <span class="contact-label" data-i18n="about.bookingLabel">${esc(t('about.bookingLabel'))}</span>
+              <span class="contact-value"><a href="mailto:tyasinturedi@gmail.com">tyasinturedi@gmail.com</a></span>
+            </div>
+          </div>
+          <form class="contact-form" id="contact-form" novalidate>
+            <div class="contact-field">
+              <label for="cf-name" data-i18n="contact.name">${esc(t('contact.name'))}</label>
+              <input id="cf-name" type="text" autocomplete="name" required>
+            </div>
+            <div class="contact-field">
+              <label for="cf-email" data-i18n="contact.email">${esc(t('contact.email'))}</label>
+              <input id="cf-email" type="email" autocomplete="email" required>
+            </div>
+            <div class="contact-field">
+              <label for="cf-message" data-i18n="contact.message">${esc(t('contact.message'))}</label>
+              <textarea id="cf-message" rows="5" required></textarea>
+            </div>
+            <div class="contact-form-footer">
+              <span class="contact-form-status" id="cf-status"></span>
+              <button type="submit" class="contact-send-btn" data-i18n="contact.send">${esc(t('contact.send'))}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>`;
+
+  $('#contact-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const name    = $('#cf-name').value.trim();
+    const email   = $('#cf-email').value.trim();
+    const message = $('#cf-message').value.trim();
+    if (!name || !email || !message) return;
+
+    const btn    = e.target.querySelector('button[type=submit]');
+    const status = $('#cf-status');
+    btn.disabled = true;
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message })
+      });
+      if (!res.ok) throw new Error();
+      status.textContent = t('contact.success');
+      status.className   = 'contact-form-status ok';
+      e.target.reset();
+    } catch {
+      status.textContent = t('contact.error');
+      status.className   = 'contact-form-status err';
+    } finally {
+      btn.disabled = false;
+    }
+  });
 }
 
 /* ── Song Detail ── */

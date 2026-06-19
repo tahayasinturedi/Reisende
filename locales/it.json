@@ -3,7 +3,8 @@
     "home":       "Home",
     "events":     "Concerti",
     "repertoire": "Repertorio",
-    "about":      "Chi siamo"
+    "about":      "Chi siamo",
+    "contact":    "Contatti"
   },
   "home": {
     "label":    "Musica da due mondi",
@@ -41,6 +42,15 @@
     "bookingLabel":  "Prenotazioni",
     "pressLabel":    "Stampa",
     "instagramLabel":"Instagram"
+  },
+  "contact": {
+    "intro":   "Hai una domanda, una richiesta di prenotazione o un'idea di collaborazione? Scrivici.",
+    "name":    "Nome e cognome",
+    "email":   "Email",
+    "message": "Messaggio",
+    "send":    "Invia",
+    "success": "Il tuo messaggio è stato ricevuto – grazie!",
+    "error":   "Si è verificato un errore. Riprova."
   },
   "song": {
     "back":            "Torna al repertorio",

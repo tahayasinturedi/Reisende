@@ -367,6 +367,23 @@
     }
     .btn-poster-remove:hover { opacity: 1; }
 
+    /* ── Messages ── */
+    .message-card {
+      border: 1px solid var(--sage-lighter);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 0.75rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.5rem 1rem;
+      align-items: start;
+    }
+    .message-meta { font-size: 0.75rem; opacity: 0.45; margin-bottom: 0.4rem; }
+    .message-name { font-family: var(--font-h); font-size: 1.05rem; }
+    .message-email { font-size: 0.8125rem; color: var(--sage); }
+    .message-body { font-size: 0.9rem; line-height: 1.6; margin-top: 0.6rem; white-space: pre-wrap; grid-column: 1; }
+    .messages-empty { text-align: center; padding: 3rem; opacity: 0.3; font-style: italic; }
+
     /* ── Gallery ── */
     .gallery-grid {
       display: grid;
@@ -425,6 +442,7 @@
       <button class="tab-btn active" data-tab="songs">Şarkılar</button>
       <button class="tab-btn" data-tab="events">Konserler</button>
       <button class="tab-btn" data-tab="gallery">Galeri</button>
+      <button class="tab-btn" data-tab="messages">Mesajlar</button>
     </div>
 
     <!-- Songs -->
@@ -476,6 +494,14 @@
         <tbody id="events-tbody"></tbody>
       </table>
     </div>
+    <!-- Messages -->
+    <div class="tab-content" id="tab-messages">
+      <div class="section-header">
+        <h2 class="section-title">Mesajlar</h2>
+      </div>
+      <div id="messages-list"></div>
+    </div>
+
     <!-- Gallery -->
     <div class="tab-content" id="tab-gallery">
       <div class="section-header">

@@ -6,6 +6,7 @@ const A = {
   songs:       [],
   events:      [],
   photos:      [],
+  messages:    [],
   tab:         'songs',
   mode:        null,       // 'song' | 'event'
   editing:     null,       // current item being edited (null = new)
@@ -105,14 +106,16 @@ async function showPanel() {
 }
 
 async function loadAll() {
-  [A.songs, A.events, A.photos] = await Promise.all([
+  [A.songs, A.events, A.photos, A.messages] = await Promise.all([
     api('GET', '/api/songs'),
     api('GET', '/api/events'),
-    api('GET', '/api/photos')
+    api('GET', '/api/photos'),
+    api('GET', '/api/messages')
   ]);
   renderSongs();
   renderEvents();
   renderGallery();
+  renderMessages();
 }
 
 /* ── Songs ── */
@@ -361,6 +364,34 @@ function bindPosterUpload() {
       bindPosterUpload();
     });
   }
+}
+
+/* ── Messages ── */
+function renderMessages() {
+  const el = $('messages-list');
+  if (!el) return;
+  if (!A.messages.length) {
+    el.innerHTML = '<div class="messages-empty">Henüz mesaj yok.</div>';
+    return;
+  }
+  el.innerHTML = A.messages.map(m => `
+    <div class="message-card">
+      <div>
+        <div class="message-meta">${new Date(m.created_at).toLocaleString('tr-TR')}</div>
+        <div class="message-name">${esc(m.name)}</div>
+        <div class="message-email">${esc(m.email)}</div>
+        <div class="message-body">${esc(m.message)}</div>
+      </div>
+      <button class="btn-delete" data-action="del-message" data-id="${m.id}">Sil</button>
+    </div>`).join('');
+}
+
+async function deleteMessage(id) {
+  if (!confirm('Bu mesaj silinsin mi?')) return;
+  try {
+    await api('DELETE', `/api/messages/${id}`, null, true);
+    await loadAll();
+  } catch (e) { alert(e.message); }
 }
 
 /* ── Gallery ── */
@@ -626,6 +657,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const photoDelId = e.target.dataset.photoDel;
     if (photoDelId) deletePhoto(photoDelId);
+
+    if (action === 'del-message') deleteMessage(id);
 
     /* Setlist: remove */
     const removeId = e.target.dataset.slRemove;

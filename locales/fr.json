@@ -3,7 +3,8 @@
     "home":       "Accueil",
     "events":     "Concerts",
     "repertoire": "Répertoire",
-    "about":      "À propos"
+    "about":      "À propos",
+    "contact":    "Contact"
   },
   "home": {
     "label":    "Musique de deux mondes",
@@ -41,6 +42,15 @@
     "bookingLabel":  "Réservation",
     "pressLabel":    "Presse",
     "instagramLabel":"Instagram"
+  },
+  "contact": {
+    "intro":   "Vous avez une question, une demande de réservation ou une idée de collaboration ? Écrivez-nous.",
+    "name":    "Nom complet",
+    "email":   "E-mail",
+    "message": "Message",
+    "send":    "Envoyer",
+    "success": "Votre message a bien été reçu – merci !",
+    "error":   "Une erreur est survenue. Veuillez réessayer."
   },
   "song": {
     "back":            "Retour au répertoire",

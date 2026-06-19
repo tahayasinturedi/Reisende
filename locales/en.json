@@ -3,7 +3,8 @@
     "home":       "Home",
     "events":     "Concerts",
     "repertoire": "Repertoire",
-    "about":      "About"
+    "about":      "About",
+    "contact":    "Contact"
   },
   "home": {
     "label":    "Music from two worlds",
@@ -41,6 +42,15 @@
     "bookingLabel":  "Booking",
     "pressLabel":    "Press",
     "instagramLabel":"Instagram"
+  },
+  "contact": {
+    "intro":   "Have a question, a booking request, or an idea for collaboration? Get in touch.",
+    "name":    "Full Name",
+    "email":   "Email",
+    "message": "Message",
+    "send":    "Send",
+    "success": "Your message has been received – thank you!",
+    "error":   "Something went wrong. Please try again."
   },
   "song": {
     "back":            "Back to repertoire",

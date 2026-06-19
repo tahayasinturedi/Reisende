@@ -507,12 +507,8 @@ async function renderAbout() {
               <span class="contact-value"><a href="mailto:tyasinturedi@gmail.com">tyasinturedi@gmail.com</a></span>
             </div>
             <div class="contact-item">
-              <span class="contact-label" data-i18n="about.pressLabel">${esc(t('about.pressLabel'))}</span>
-              <span class="contact-value"><a href="mailto:tyasinturedi@gmail.com">tyasinturedi@gmail.com</a></span>
-            </div>
-            <div class="contact-item">
               <span class="contact-label" data-i18n="about.instagramLabel">${esc(t('about.instagramLabel'))}</span>
-              <span class="contact-value"><a href="https://instagram.com" target="_blank" rel="noopener noreferrer">@reisende.musik</a></span>
+              <span class="contact-value"><a href="https://instagram.com/reisende.musik" target="_blank" rel="noopener noreferrer">@reisende.musik</a></span>
             </div>
           </div>
         </div>
